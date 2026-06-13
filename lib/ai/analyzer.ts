@@ -4,7 +4,17 @@ import { AIAnalysis, DailyCheckIn, HistoricalPattern } from '@/types';
 
 /**
  * Analyzes a daily check-in using OpenRouter AI (DeepSeek V3)
- * Returns structured wellness assessment
+ * Returns structured wellness assessment with emotion analysis, stress detection,
+ * and personalized recommendations
+ * 
+ * @param {DailyCheckIn} checkIn - The daily check-in data to analyze
+ * @param {DailyCheckIn[]} [historicalData] - Optional historical check-ins for pattern detection
+ * @returns {Promise<AIAnalysis>} Structured AI analysis with wellness insights
+ * @throws {Error} If analysis fails, returns fallback analysis instead
+ * 
+ * @example
+ * const analysis = await analyzeCheckIn(todayCheckIn, pastWeekCheckIns);
+ * console.log(analysis.stressScore); // 75
  */
 export async function analyzeCheckIn(
   checkIn: DailyCheckIn,
@@ -15,7 +25,7 @@ export async function analyzeCheckIn(
   try {
     const responseText = await callOpenRouter(prompt);
 
-    // Parse JSON response
+    // Parse JSON response with error handling
     const analysis = JSON.parse(responseText) as AIAnalysis;
 
     // Validation: Ensure all required fields exist
@@ -24,14 +34,22 @@ export async function analyzeCheckIn(
     return analysis;
   } catch (error) {
     console.error('Error analyzing check-in:', error);
-    
+
     // Fallback: Return safe default response
     return createFallbackAnalysis(checkIn);
   }
 }
 
 /**
- * Detects patterns across multiple check-ins
+ * Detects behavioral and emotional patterns across multiple check-ins
+ * Uses AI to identify correlations and trends that users might miss
+ * 
+ * @param {DailyCheckIn[]} checkIns - Array of check-ins to analyze (minimum 3 required)
+ * @returns {Promise<HistoricalPattern[]>} Array of detected patterns with insights
+ * 
+ * @example
+ * const patterns = await detectPatterns(lastWeekCheckIns);
+ * patterns.forEach(p => console.log(p.pattern, p.insight));
  */
 export async function detectPatterns(checkIns: DailyCheckIn[]): Promise<HistoricalPattern[]> {
   if (checkIns.length < 3) {
@@ -44,7 +62,8 @@ export async function detectPatterns(checkIns: DailyCheckIn[]): Promise<Historic
     const responseText = await callOpenRouter(prompt);
     const patterns = JSON.parse(responseText) as HistoricalPattern[];
 
-    return patterns.filter(p => p.confidence > 60); // Only high-confidence patterns
+    // Only return high-confidence patterns (>60%)
+    return patterns.filter((p) => p.confidence > 60);
   } catch (error) {
     console.error('Error detecting patterns:', error);
     return [];
