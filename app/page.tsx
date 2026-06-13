@@ -1,10 +1,21 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Sparkles, Brain, Heart, Target, TrendingUp, Shield } from 'lucide-react';
+import { getTodayCheckIn } from '@/lib/utils/storage';
 
 export default function HomePage() {
   const router = useRouter();
+
+  useEffect(() => {
+    // Check if user has completed onboarding
+    const hasCompletedOnboarding = localStorage.getItem('mindbloom_onboarding_complete');
+    
+    if (!hasCompletedOnboarding) {
+      router.push('/onboarding');
+    }
+  }, [router]);
 
   const features = [
     {
