@@ -216,6 +216,54 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* Quick Actions */}
+        <div className="grid gap-4 sm:grid-cols-3 mb-8">
+          <button
+            onClick={() => router.push('/history')}
+            className="rounded-xl border border-border bg-card p-6 hover:shadow-md transition-all text-left group"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <div className="rounded-full bg-blue-100 dark:bg-blue-950/20 p-2 group-hover:bg-blue-200 dark:group-hover:bg-blue-950/40 transition-colors">
+                <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              </div>
+              <h3 className="text-sm font-semibold">View History</h3>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Review past check-ins and progress
+            </p>
+          </button>
+
+          <button
+            onClick={() => router.push('/insights')}
+            className="rounded-xl border border-border bg-card p-6 hover:shadow-md transition-all text-left group"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <div className="rounded-full bg-purple-100 dark:bg-purple-950/20 p-2 group-hover:bg-purple-200 dark:group-hover:bg-purple-950/40 transition-colors">
+                <TrendingUp className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+              </div>
+              <h3 className="text-sm font-semibold">View Insights</h3>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Analyze trends and patterns
+            </p>
+          </button>
+
+          <button
+            onClick={() => router.push('/checkin')}
+            className="rounded-xl border border-border bg-card p-6 hover:shadow-md transition-all text-left group"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <div className="rounded-full bg-green-100 dark:bg-green-950/20 p-2 group-hover:bg-green-200 dark:group-hover:bg-green-950/40 transition-colors">
+                <Plus className="h-5 w-5 text-green-600 dark:text-green-400" />
+              </div>
+              <h3 className="text-sm font-semibold">New Check-in</h3>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Log today&apos;s wellness data
+            </p>
+          </button>
+        </div>
+
         {/* Main Content Grid */}
         <div className="grid gap-6 lg:grid-cols-2 mb-8">
           {/* Emotional Summary */}
